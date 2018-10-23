@@ -78,13 +78,53 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIInputCheckbox: aBLUIInputCheckbox [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIInputPassword: aBLUIInputPassword [
+	^ aBLUIInputPassword name
+		,
+			' := self newTextInput 
+		encrypted: true;'
+		,
+			(aBLUIInputPassword attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIInputText: aBLUIInputText [
+	^ aBLUIInputText name , ' := self newTextInput '
+		,
+			(aBLUIInputText attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
 	^ 'label: ' , aBLUILabel text , ';'
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIParagraph: aBLUIParagraph [
+	^ aBLUIParagraph name , ' := self newLabel '
+		,
+			(aBLUIParagraph attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIPlaceholder: aBLUIPlaceholder [
+	^ 'ghostText: ' , aBLUIPlaceholder text , ';'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUITitle: aBLUITitle [
 	^ 'help: ' , aBLUITitle text , ';'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIValue: aBLUIValue [
+	^ 'text: ' , aBLUIValue text , ';'
 ]
 
 { #category : #visiting }
