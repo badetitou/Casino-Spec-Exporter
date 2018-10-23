@@ -69,7 +69,7 @@ CSNSpecExporter >> visitBLLayout: aBLLayout [
 CSNSpecExporter >> visitBLPage: aBLPage [
 	| class |
 	class := ComposablePresenter
-		subclass: self prefix , aBLPage name
+		subclass: self prefix , aBLPage name capitalized
 		instanceVariableNames:
 			''
 				,
@@ -94,7 +94,8 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 		compile: 'title' , String crlf , String tab , '^ ' , (aBLPage title ifNil: [ '''''' ]).
 	class instanceVariables
 		do: [ :each | self createAccessorForVariable: each inClass: class ].
-	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class
+	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class.
+	^ self visitBLWidget: aBLPage
 ]
 
 { #category : #visiting }

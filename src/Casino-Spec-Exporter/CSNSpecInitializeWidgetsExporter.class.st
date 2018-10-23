@@ -49,6 +49,12 @@ CSNSpecInitializeWidgetsExporter >> visitBLAttribute: aBLAttribute [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLPage: aBLPage [
+	^ aBLPage name uncapitalized , ' := (self instantiate: '
+		,self mainExporter prefix, aBLPage name capitalized , ')'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLPageMetier: aBLBusinessPage [
 	^ aBLBusinessPage name uncapitalized , ' := (self instantiate: '
 		,self mainExporter prefix, aBLBusinessPage name capitalized , ')'
