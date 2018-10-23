@@ -43,23 +43,56 @@ CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfPage: aBLPage [
 	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: BLUIPanel ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLAttribute: aBLAttribute [
+	^ ''
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLPageMetier: aBLBusinessPage [
 	^ aBLBusinessPage name uncapitalized , ' := (self instantiate: '
 		,self mainExporter prefix, aBLBusinessPage name capitalized , ')'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIDisabled: aBLUIDisabled [
+	^ 'disable;'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputButton: aBLUIInputButton [
-	^ aBLUIInputButton name, ' := self newButton'.
+	^ aBLUIInputButton name , ' := self newButton '
+		,
+			(aBLUIInputButton attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputCheckbox: aBLUIInputCheckbox [
-	^ aBLUIInputCheckbox name , ' := self newCheckBox'
+	^ aBLUIInputCheckbox name , ' := self newCheckBox '
+		,
+			(aBLUIInputCheckbox attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
+	^ 'label: ' , aBLUILabel text , ';'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUITitle: aBLUITitle [
+	^ 'help: ' , aBLUITitle text , ';'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLWidget: aBLWidget [
 	^ ' "not handle --> " ', (aBLWidget name).
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitMooseModel: aMooseModel [
+	self shouldNotImplement 
 ]
