@@ -124,6 +124,15 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIPlaceholder: aBLUIPlaceholder [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUISelect: aBLUISelect [
+	^ aBLUISelect name , ' := self newDropList '
+		,
+			(aBLUISelect attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUITitle: aBLUITitle [
 	^ 'help: ' , aBLUITitle text , ';'
 ]
