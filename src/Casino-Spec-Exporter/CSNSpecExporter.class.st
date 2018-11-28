@@ -144,10 +144,10 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 		'
 		,
 			(aBLUIHorizontalLayout cell
-				flatCollect: [ :cell | localVariableName ,' ', (self visit: cell) , '.' ])
+				flatCollect: [ :cell | (localVariableName ,' ', (self visit: cell) , '.
+			') indentBy: 4 ])
 		,
-			'
-		]'
+			']'
 ]
 
 { #category : #visiting }
