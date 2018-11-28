@@ -178,5 +178,5 @@ CSNSpecExporter >> visitBLWidget: aBLWidget [
 
 { #category : #visiting }
 CSNSpecExporter >> visitMooseModel: aMooseModel [
-	aMooseModel allBLPhase do: [ :phase | self visit: phase ]
+	aMooseModel allBLPage do: [ :phase | self visit: phase ]
 ]
