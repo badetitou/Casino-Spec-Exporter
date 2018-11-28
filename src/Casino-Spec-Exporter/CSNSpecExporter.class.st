@@ -41,7 +41,7 @@ CSNSpecExporter >> recursiveLocalWidgetNameOfBLBusinessPage: aBLBuisinessPage [
 
 { #category : #visiting }
 CSNSpecExporter >> recursiveLocalWidgetNameOfPage: aBLPage [
-	^ (self recursiveLocalWidgetOfPage: aBLPage) collect: #name.
+	^ (self recursiveLocalWidgetOfPage: aBLPage) reject: #isNil thenCollect: #name.
 ]
 
 { #category : #visiting }
@@ -57,7 +57,7 @@ CSNSpecExporter >> recursiveLocalWidgetOfPage: aBLPage [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLCell: aBLCell [
-	^ self visit: aBLCell widget
+ 	^ aBLCell widget ifNil: [ '' ] ifNotNil: [ self visit: aBLCell widget ] 
 ]
 
 { #category : #visiting }

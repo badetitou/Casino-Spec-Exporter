@@ -110,6 +110,15 @@ CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIList: aBLUIList [
+	^ aBLUIList name , ' := self newList '
+		,
+			(aBLUIList attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIParagraph: aBLUIParagraph [
 	^ aBLUIParagraph name , ' := self newLabel '
 		,
