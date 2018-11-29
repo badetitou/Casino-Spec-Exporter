@@ -162,7 +162,8 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
-	^ aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]
+	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]), ' '
+		, (aBLUIPanel attributes flatCollect: [ :attribute | self visit: attribute ])
 ]
 
 { #category : #visiting }
