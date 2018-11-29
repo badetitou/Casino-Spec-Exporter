@@ -56,6 +56,11 @@ CSNSpecExporter >> recursiveLocalWidgetOfPage: aBLPage [
 ]
 
 { #category : #visiting }
+CSNSpecExporter >> visitBLAttribute: aBLAttribute [
+	^ ''
+]
+
+{ #category : #visiting }
 CSNSpecExporter >> visitBLCell: aBLCell [
  	^ aBLCell widget ifNil: [ '' ] ifNotNil: [ self visit: aBLCell widget ] 
 ]
@@ -135,6 +140,11 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 ]
 
 { #category : #visiting }
+CSNSpecExporter >> visitBLUIHeight: aBLUIHeight [
+	^ aBLUIHeight name, ': ', aBLUIHeight attributeValue 
+]
+
+{ #category : #visiting }
 CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 	| localVariableName |
 	localVariableName := 'row' , aBLUIHorizontalLayout mooseName.
@@ -172,8 +182,13 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 ]
 
 { #category : #visiting }
+CSNSpecExporter >> visitBLUIWidth: aBLUIWidth [
+	^ aBLUIWidth name , ': ' , aBLUIWidth attributeValue
+]
+
+{ #category : #visiting }
 CSNSpecExporter >> visitBLWidget: aBLWidget [
-	^ 'add: #' , (aBLWidget name uncapitalized) 
+	^ 'add: #' , aBLWidget name uncapitalized, ' ', (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute])
 ]
 
 { #category : #visiting }

@@ -153,7 +153,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIValue: aBLUIValue [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLWidget: aBLWidget [
-	^ ' "not handle --> " ', (aBLWidget name).
+	^ ' "not handle -->  ' , aBLWidget name, '"'
 ]
 
 { #category : #visiting }
