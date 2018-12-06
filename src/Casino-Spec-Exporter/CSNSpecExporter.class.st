@@ -86,7 +86,7 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 					((self recursiveLocalWidgetNameOfPage: aBLPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
-		package: self exportedPackageName.
+		package: self exportedPackageName, '-Page'.
 	class class
 		compile:
 			'open
@@ -97,7 +97,9 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 			'defaultSpec
 	<spec: #default>
 	^ SpecLayout composed '
-				, ({aBLPage widgets. aBLPage businessPage} flatten flatCollect: [ :widget | self visit: widget ])
+				,
+					({aBLPage widgets.
+					aBLPage businessPage} flatten flatCollect: [ :widget | self visit: widget ])
 				,
 					'; 
 				yourself'.
@@ -113,14 +115,14 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 	| class |
 	class := ComposablePresenter
-		subclass: self prefix , aBLBusinessPage name capitalized
+		subclass: self prefix , (aBLBusinessPage name capitalized, aBLBusinessPage mooseID asString)
 		instanceVariableNames:
 			''
 				,
 					((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
-		package: self exportedPackageName, '-Components'.
+		package: self exportedPackageName , '-Components'.
 	class class
 		compile:
 			'open
@@ -169,8 +171,24 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
-	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]), ' '
-		, (aBLUIPanel attributes flatCollect: [ :attribute | self visit: attribute ])
+	"code of VerticalLayout with "
+	| localVariableName |
+	localVariableName := 'col' , aBLUIPanel mooseName.
+	^ 'newColumn: [ :' , localVariableName
+		,
+			' |
+		'
+		,
+			(aBLUIPanel widgets
+				flatCollect: [ :widget | 
+					localVariableName , ' ' , (self visit: widget)
+						,
+							'.
+			' indentBy: 4 ])
+		,
+			'
+		]
+	'
 ]
 
 { #category : #visiting }

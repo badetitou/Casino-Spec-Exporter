@@ -57,7 +57,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLPage: aBLPage [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLPageMetier: aBLBusinessPage [
 	^ aBLBusinessPage name uncapitalized , ' := (self instantiate: '
-		,self mainExporter prefix, aBLBusinessPage name capitalized , ')'
+		, self mainExporter prefix , (aBLBusinessPage name capitalized, aBLBusinessPage mooseID asString) , ')'
 ]
 
 { #category : #visiting }
@@ -139,6 +139,14 @@ CSNSpecInitializeWidgetsExporter >> visitBLUISelect: aBLUISelect [
 			(aBLUISelect attributes
 				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
 		, 'yourself'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUITextarea: aBLUITextarea [
+	^ aBLUITextarea name , ' := self newText '
+		,
+			(aBLUITextarea attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
