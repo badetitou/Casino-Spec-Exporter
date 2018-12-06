@@ -66,6 +66,15 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIDisabled: aBLUIDisabled [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIInput: aBLUIInput [
+	^ aBLUIInput name , ' := self newTextInput '
+		,
+			(aBLUIInput attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputButton: aBLUIInputButton [
 	^ aBLUIInputButton name , ' := self newButton '
 		,
