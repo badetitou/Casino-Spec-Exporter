@@ -41,7 +41,8 @@ CSNSpecExporter >> prepareExport [
 
 { #category : #visiting }
 CSNSpecExporter >> recursiveLocalWidgetNameOfBLBusinessPage: aBLBuisinessPage [
-	^  (self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage) collect: #name
+	^ (self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage)
+		collect: [ :widget | widget name , widget mooseID asString ]
 ]
 
 { #category : #visiting }
@@ -50,8 +51,8 @@ CSNSpecExporter >> recursiveLocalWidgetNameOfPage: aBLPage [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage [
-	^ (aBLBuisinessPage widgets collect: #localWidgets) flattened
+CSNSpecExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
+	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
 		reject: [ :widget | widget isKindOf: BLUIPanel ]
 ]
 
@@ -118,7 +119,7 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 		subclass: self prefix , (aBLBusinessPage name capitalized, aBLBusinessPage mooseID asString)
 		instanceVariableNames:
 			''
-				,
+				, 
 					((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''

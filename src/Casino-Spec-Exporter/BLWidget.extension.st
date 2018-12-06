@@ -6,8 +6,3 @@ BLWidget >> localWidgets [
 	^ {}
 	
 ]
-
-{ #category : #'*Casino-Spec-Exporter' }
-BLWidget >> name [
-	^ name ifNil: [ 'widget', self mooseID asString  ] 
-]

@@ -33,8 +33,8 @@ CSNSpecInitializeWidgetsExporter >> mainExporter: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage [
-	^ (aBLBuisinessPage widgets collect: #localWidgets) flattened
+CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
+	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
 		reject: [ :widget | widget isKindOf: BLUIPanel ]
 ]
 
