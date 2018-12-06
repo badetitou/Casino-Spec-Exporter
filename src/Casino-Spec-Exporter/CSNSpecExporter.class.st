@@ -96,7 +96,8 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 		compile:
 			'defaultSpec
 	<spec: #default>
-	^ SpecLayout composed ' , (aBLPage widgets flatCollect: [ :widget | self visit: widget ])
+	^ SpecLayout composed '
+				, ({aBLPage widgets. aBLPage businessPage} flatten flatCollect: [ :widget | self visit: widget ])
 				,
 					'; 
 				yourself'.
@@ -119,7 +120,7 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 					((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
-		package: self exportedPackageName.
+		package: self exportedPackageName, '-Components'.
 	class class
 		compile:
 			'open
