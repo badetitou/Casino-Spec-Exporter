@@ -171,24 +171,8 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
-	"code of VerticalLayout with "
-	| localVariableName |
-	localVariableName := 'col' , aBLUIPanel mooseName.
-	^ 'newColumn: [ :' , localVariableName
-		,
-			' |
-		'
-		,
-			(aBLUIPanel widgets
-				flatCollect: [ :widget | 
-					localVariableName , ' ' , (self visit: widget)
-						,
-							'.
-			' indentBy: 4 ])
-		,
-			'
-		]
-	'
+	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]), ' '
+		, (aBLUIPanel attributes flatCollect: [ :attribute | self visit: attribute ])
 ]
 
 { #category : #visiting }
