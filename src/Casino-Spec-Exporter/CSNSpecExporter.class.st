@@ -7,6 +7,11 @@ Class {
 	#category : #'Casino-Spec-Exporter-Exporter'
 }
 
+{ #category : #'private - utilities' }
+CSNSpecExporter >> computeAcceptedNameForClassFrom: aString [
+	^ (aString capitalized copyReplaceAll: ' ' with: '') copyReplaceAll: '-' with: '_' 
+]
+
 { #category : #visiting }
 CSNSpecExporter >> createAccessorForVariable: each inClass: class [
 	"generate the getter and the setter"
@@ -74,7 +79,7 @@ CSNSpecExporter >> visitBLLayout: aBLLayout [
 CSNSpecExporter >> visitBLPage: aBLPage [
 	| class |
 	class := ComposablePresenter
-		subclass: self prefix , aBLPage name capitalized
+		subclass: self prefix , (self computeAcceptedNameForClassFrom: aBLPage name)
 		instanceVariableNames:
 			''
 				,
