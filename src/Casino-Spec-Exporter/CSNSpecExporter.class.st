@@ -82,8 +82,8 @@ CSNSpecExporter >> visitBLCell: aBLCell [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLLayout: aBLLayout [
-	"default choice is horizontal layout"
-	^ self visitBLUIHorizontalLayout: aBLLayout	"aBLLayout cell flatCollect: [ :cell | self visit: cell ]"
+
+	^ self visitBLUIVerticalLayout: aBLLayout
 ]
 
 { #category : #visiting }

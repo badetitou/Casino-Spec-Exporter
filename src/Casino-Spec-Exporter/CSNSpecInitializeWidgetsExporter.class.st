@@ -114,6 +114,12 @@ CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUILink: aBLUILink [
+	^ (self computeWidgetName: aBLUILink) , ' := self newLabel '
+		, (aBLUILink attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIList: aBLUIList [
 	^ (self computeWidgetName: aBLUIList) , ' := self newList '
 		, (aBLUIList attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
