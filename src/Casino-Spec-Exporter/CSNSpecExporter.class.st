@@ -91,11 +91,7 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 	| class |
 	class := ComposablePresenter
 		subclass: self prefix , (self computeAcceptedNameForClassFrom: aBLPage name)
-		instanceVariableNames:
-			''
-				,
-					((self recursiveLocalWidgetNameOfPage: aBLPage)
-						flatCollect: [ :name | name uncapitalized , ' ' ])
+		instanceVariableNames: '' , ((self recursiveLocalWidgetNameOfPage: aBLPage) flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
 		package: self exportedPackageName , '-Page'.
 	class class
@@ -110,17 +106,12 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 	^ SpecLayout composed '
 				,
 					({aBLPage widgets.
-					aBLPage businessPage} flatten
-						flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
+					aBLPage businessPage} flatten flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
 				,
 					'
 				yourself'.
-	class
-		compile:
-			'title' , String crlf , String tab , '^ '
-				, ('''' , ((self protectString: aBLPage title) ifNil: [ '' ]) , '''').
-	class instanceVariables
-		do: [ :each | self createAccessorForVariable: each inClass: class ].
+	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString:( aBLPage title ifNil: [ '' ])) , '''').
+	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
 	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class.
 	^ self visitBLWidget: aBLPage
 ]
@@ -130,11 +121,7 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 	| class |
 	class := ComposablePresenter
 		subclass: self prefix , (aBLBusinessPage name capitalized , aBLBusinessPage mooseID asString)
-		instanceVariableNames:
-			''
-				,
-					((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage)
-						flatCollect: [ :name | name uncapitalized , ' ' ])
+		instanceVariableNames: '' , ((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage) flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
 		package: self exportedPackageName , '-Components'.
 	class class
@@ -146,28 +133,21 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 		compile:
 			'defaultSpec
 	<spec: #default>
-	^ SpecLayout composed '
-				,
-					(aBLBusinessPage widgets
-						flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
+	^ SpecLayout composed ' , (aBLBusinessPage widgets flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
 				,
 					'
 				yourself'.
-	class instanceVariables
-		do: [ :each | self createAccessorForVariable: each inClass: class ].
-	class
-		compile:
-			'title' , String crlf , String tab , '^ '
-				, ('''' , ((self protectString: aBLBusinessPage title) ifNil: [ '' ]) , '''').
-	initializeWidgetsExporter
-		exportInitializeWidgetOfBusinessPage: aBLBusinessPage
-		inClass: class.
+	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
+	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString:( aBLBusinessPage title ifNil: [ '' ])) , '''').
+	initializeWidgetsExporter exportInitializeWidgetOfBusinessPage: aBLBusinessPage inClass: class.
 	^ self visitBLWidget: aBLBusinessPage
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIHeight: aBLUIHeight [
-	^ aBLUIHeight name , ': ' , aBLUIHeight attributeValue onlyNumbers, ';'
+	^ aBLUIHeight attributeValue onlyNumbers
+		ifEmpty: [ self visitBLAttribute: aBLUIHeight ]
+		ifNotEmpty: [ aBLUIHeight name , ': ' , aBLUIHeight attributeValue onlyNumbers , ';' ]
 ]
 
 { #category : #visiting }
@@ -223,7 +203,7 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIWidth: aBLUIWidth [
-	^ aBLUIWidth name , ': ' , aBLUIWidth attributeValue onlyNumbers , ';'
+	^ aBLUIWidth attributeValue onlyNumbers ifEmpty: [self visitBLAttribute: aBLUIWidth ] ifNotEmpty: [aBLUIWidth name , ': ' , aBLUIWidth attributeValue onlyNumbers , ';']
 ]
 
 { #category : #visiting }
