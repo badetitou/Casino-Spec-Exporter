@@ -71,6 +71,12 @@ CSNSpecInitializeWidgetsExporter >> visitBLPageMetier: aBLBusinessPage [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIContainer: aBLUIContainer [
+	^ (self computeWidgetName: aBLUIContainer)
+		, ' := (self instantiate: NullPresenter)'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIDisabled: aBLUIDisabled [
 	^ 'disable;'
 ]
