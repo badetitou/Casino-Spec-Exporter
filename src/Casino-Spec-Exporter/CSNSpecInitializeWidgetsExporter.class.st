@@ -10,6 +10,11 @@ Class {
 	#category : #'Casino-Spec-Exporter-Exporter'
 }
 
+{ #category : #accessing }
+CSNSpecInitializeWidgetsExporter >> computeWidgetName: aWidget [
+	^ self mainExporter computeAcceptedNameForVariableFrom: aWidget name
+]
+
 { #category : #'as yet unclassified' }
 CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfBusinessPage: aBLBuisinessPage inClass: aClass [
 	aClass compile: 'initializeWidgets
@@ -34,7 +39,7 @@ CSNSpecInitializeWidgetsExporter >> mainExporter: anObject [
 
 { #category : #'private - utilities' }
 CSNSpecInitializeWidgetsExporter >> protectString: aString [
-	^ aString copyReplaceAll: '''' with: '''''' 
+	^ self mainExporter protectString: aString
 ]
 
 { #category : #'as yet unclassified' }
@@ -72,50 +77,35 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIDisabled: aBLUIDisabled [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInput: aBLUIInput [
-	^ aBLUIInput name , ' := self newTextInput '
-		,
-			(aBLUIInput attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIInput) , ' := self newTextInput '
+		, (aBLUIInput attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputButton: aBLUIInputButton [
-	^ aBLUIInputButton name , ' := self newButton '
-		,
-			(aBLUIInputButton attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIInputButton) , ' := self newButton '
+		, (aBLUIInputButton attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputCheckbox: aBLUIInputCheckbox [
-	^ aBLUIInputCheckbox name , ' := self newCheckBox '
-		,
-			(aBLUIInputCheckbox attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIInputCheckbox) , ' := self newCheckBox '
+		, (aBLUIInputCheckbox attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputPassword: aBLUIInputPassword [
-	^ aBLUIInputPassword name
+	^ (self computeWidgetName: aBLUIInputPassword)
 		,
 			' := self newTextInput 
-		encrypted: true;'
-		,
-			(aBLUIInputPassword attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		encrypted: true;' , (aBLUIInputPassword attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
 		, 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIInputText: aBLUIInputText [
-	^ aBLUIInputText name , ' := self newTextInput '
-		,
-			(aBLUIInputText attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIInputText) , ' := self newTextInput '
+		, (aBLUIInputText attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -125,20 +115,14 @@ CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIList: aBLUIList [
-	^ aBLUIList name , ' := self newList '
-		,
-			(aBLUIList attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIList) , ' := self newList '
+		, (aBLUIList attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIParagraph: aBLUIParagraph [
-	^ aBLUIParagraph name , ' := self newLabel '
-		,
-			(aBLUIParagraph attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUIParagraph) , ' := self newLabel '
+		, (aBLUIParagraph attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -148,19 +132,14 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIPlaceholder: aBLUIPlaceholder [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUISelect: aBLUISelect [
-	^ aBLUISelect name , ' := self newDropList '
-		,
-			(aBLUISelect attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
-		, 'yourself'
+	^ (self computeWidgetName: aBLUISelect) , ' := self newDropList '
+		, (aBLUISelect attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUITextarea: aBLUITextarea [
-	^ aBLUITextarea name , ' := self newText '
-		,
-			(aBLUITextarea attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+	^  (self computeWidgetName: aBLUITextarea) , ' := self newText '
+		, (aBLUITextarea attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -175,7 +154,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIValue: aBLUIValue [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLWidget: aBLWidget [
-	^ ' "not handle -->  ' , aBLWidget name, '"'
+	^ ' "not handle -->  ' , (self computeWidgetName: aBLWidget) , '"'
 ]
 
 { #category : #visiting }
