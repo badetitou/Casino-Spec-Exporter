@@ -14,7 +14,7 @@ CSNSpecExporter >> computeAcceptedNameForClassFrom: aString [
 
 { #category : #'private - utilities' }
 CSNSpecExporter >> computeAcceptedNameForVariableFrom: aString [
-	^ (aString capitalized copyReplaceAll: '(' with: '') copyReplaceAll: ')' with: ''
+	^ (aString uncapitalized copyReplaceAll: '(' with: '') copyReplaceAll: ')' with: ''
 ]
 
 { #category : #visiting }
@@ -153,7 +153,10 @@ CSNSpecExporter >> visitBLUIHeight: aBLUIHeight [
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 	| localVariableName |
-	localVariableName := 'row' , (self computeAcceptedNameForVariableFrom: aBLUIHorizontalLayout mooseName).
+	localVariableName := 'row'
+		,
+			(self
+				computeAcceptedNameForVariableFrom: aBLUIHorizontalLayout mooseName , aBLUIHorizontalLayout mooseID asString).
 	^ 'newRow: [ :' , localVariableName
 		,
 			' |
@@ -183,7 +186,7 @@ CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 	| localVariableName |
-	localVariableName := 'col' , (self computeAcceptedNameForVariableFrom: aBLUIVerticalLayout mooseName).
+	localVariableName := 'col' , (self computeAcceptedNameForVariableFrom: (aBLUIVerticalLayout mooseName, aBLUIVerticalLayout mooseID asString)).
 	^ 'newColumn: [ :' , localVariableName
 		,
 			' |
