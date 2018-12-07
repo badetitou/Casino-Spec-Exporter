@@ -148,8 +148,14 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 		'
 		,
 			(aBLUIHorizontalLayout cell
-				flatCollect: [ :cell | (localVariableName ,' ', (self visit: cell) , '.
-			') indentBy: 4 ])
+				flatCollect: [ :cell | 
+					localVariableName , ' '
+						,
+							((self visit: cell)
+								removeSuffix: ';')
+						,
+							'.
+			' indentBy: 4 ])
 		,
 			']
 		'
@@ -177,8 +183,14 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 		'
 		,
 			(aBLUIVerticalLayout cell
-				flatCollect: [ :cell | (localVariableName ,' ', (self visit: cell) , '.
-			') indentBy: 4 ])
+				flatCollect: [ :cell | 
+					localVariableName , ' '
+						,
+							((self visit: cell)
+								removeSuffix: ';')
+						,
+							'.
+			' indentBy: 4 ])
 		,
 			'
 		]
