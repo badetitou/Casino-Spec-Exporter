@@ -143,7 +143,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIParagraph: aBLUIParagraph [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIPlaceholder: aBLUIPlaceholder [
-	^ 'ghostText: ' , aBLUIPlaceholder text , ';'
+	^ 'ghostText: ''' , aBLUIPlaceholder text , ''';'
 ]
 
 { #category : #visiting }
