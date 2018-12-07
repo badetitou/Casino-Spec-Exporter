@@ -32,6 +32,11 @@ CSNSpecInitializeWidgetsExporter >> mainExporter: anObject [
 	mainExporter := anObject
 ]
 
+{ #category : #'private - utilities' }
+CSNSpecInitializeWidgetsExporter >> protectString: aString [
+	^ aString copyReplaceAll: '''' with: '''''' 
+]
+
 { #category : #'as yet unclassified' }
 CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
 	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
@@ -115,7 +120,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIInputText: aBLUIInputText [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
-	^ 'label: ' , aBLUILabel text , ';'
+	^ 'label: ''' , (self protectString: aBLUILabel text) , ''';'
 ]
 
 { #category : #visiting }
@@ -160,12 +165,12 @@ CSNSpecInitializeWidgetsExporter >> visitBLUITextarea: aBLUITextarea [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUITitle: aBLUITitle [
-	^ 'help: ' , aBLUITitle text , ';'
+	^ 'help: ''' , (self protectString: aBLUITitle attributeValue) , ''';'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIValue: aBLUIValue [
-	^ 'text: ' , aBLUIValue text , ';'
+	^ 'text: ''' , (self protectString: aBLUIValue attributeValue) , ''';'
 ]
 
 { #category : #visiting }

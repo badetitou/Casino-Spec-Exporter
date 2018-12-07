@@ -87,7 +87,7 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 					((self recursiveLocalWidgetNameOfPage: aBLPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
-		package: self exportedPackageName, '-Page'.
+		package: self exportedPackageName , '-Page'.
 	class class
 		compile:
 			'open
@@ -100,12 +100,12 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 	^ SpecLayout composed '
 				,
 					({aBLPage widgets.
-					aBLPage businessPage} flatten flatCollect: [ :widget | self visit: widget ])
+					aBLPage businessPage} flatten flatCollect: [ :widget | (self visit: widget) , ';' ])
 				,
-					'; 
+					'
 				yourself'.
 	class
-		compile: 'title' , String crlf , String tab , '^ ' , (aBLPage title ifNil: [ '''''' ]).
+		compile: 'title' , String crlf , String tab , '^ ' , ('''', (aBLPage title ifNil: [ '' ]), '''').
 	class instanceVariables
 		do: [ :each | self createAccessorForVariable: each inClass: class ].
 	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class.
@@ -116,10 +116,10 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 	| class |
 	class := ComposablePresenter
-		subclass: self prefix , (aBLBusinessPage name capitalized, aBLBusinessPage mooseID asString)
+		subclass: self prefix , (aBLBusinessPage name capitalized , aBLBusinessPage mooseID asString)
 		instanceVariableNames:
 			''
-				, 
+				,
 					((self recursiveLocalWidgetNameOfBLBusinessPage: aBLBusinessPage)
 						flatCollect: [ :name | name uncapitalized , ' ' ])
 		classVariableNames: ''
@@ -134,14 +134,14 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 			'defaultSpec
 	<spec: #default>
 	^ SpecLayout composed '
-				, (aBLBusinessPage widgets flatCollect: [ :widget | self visit: widget ])
+				, (aBLBusinessPage widgets flatCollect: [ :widget | (self visit: widget) , ';' ])
 				,
-					'; 
+					'
 				yourself'.
 	class instanceVariables
 		do: [ :each | self createAccessorForVariable: each inClass: class ].
 	class
-		compile: 'title' , String crlf , String tab , '^ ' , (aBLBusinessPage title ifNil: [ '''''' ]).
+		compile: 'title' , String crlf , String tab , '^ ' , ('''' , (aBLBusinessPage title ifNil: [ '' ]) , '''').
 	initializeWidgetsExporter
 		exportInitializeWidgetOfBusinessPage: aBLBusinessPage
 		inClass: class.
@@ -150,7 +150,7 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIHeight: aBLUIHeight [
-	^ aBLUIHeight name, ': ', aBLUIHeight attributeValue 
+	^ aBLUIHeight name , ': ' , aBLUIHeight attributeValue onlyNumbers
 ]
 
 { #category : #visiting }
@@ -172,8 +172,14 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
-	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]), ' '
-		, (aBLUIPanel attributes flatCollect: [ :attribute | self visit: attribute ])
+	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]) , ' '
+		,
+			(aBLUIPanel attributes
+				ifEmpty: [ '' ]
+				ifNotEmpty: [ :attributes | 
+					(attributes flatCollect: [ :attribute | (self visit: attribute), ';' , String crlf ])
+						removeLast;
+						yourself ])
 ]
 
 { #category : #visiting }
@@ -196,12 +202,13 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIWidth: aBLUIWidth [
-	^ aBLUIWidth name , ': ' , aBLUIWidth attributeValue
+	^ aBLUIWidth name , ': ' , aBLUIWidth attributeValue onlyNumbers
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLWidget: aBLWidget [
-	^ 'add: #' , aBLWidget name uncapitalized, ' ', (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute])
+	^ 'add: #' , aBLWidget name uncapitalized , ' '
+		, (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute ])
 ]
 
 { #category : #visiting }
