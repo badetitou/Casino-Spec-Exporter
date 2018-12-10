@@ -133,30 +133,53 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 		compile:
 			'defaultSpec
 	<spec: #default>
-	^ SpecLayout composed ' , (aBLBusinessPage widgets flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
+	^ SpecLayout composed '
+				, (aBLBusinessPage widgets flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') , String crlf ])
 				,
 					'
 				yourself'.
 	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
-	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString:( aBLBusinessPage title ifNil: [ '' ])) , '''').
+	class
+		compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aBLBusinessPage title ifNil: [ '' ])) , '''').
 	initializeWidgetsExporter exportInitializeWidgetOfBusinessPage: aBLBusinessPage inClass: class.
 	^ self visitBLWidget: aBLBusinessPage
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIHeight: aBLUIHeight [
-	^ aBLUIHeight attributeValue onlyNumbers
-		ifEmpty: [ self visitBLAttribute: aBLUIHeight ]
-		ifNotEmpty: [ aBLUIHeight name , ': ' , aBLUIHeight attributeValue onlyNumbers , ';' ]
+CSNSpecExporter >> visitBLUIAbsoluteHeight: aBLUIAbsoluteHeight [
+	^ aBLUIAbsoluteHeight attributeValue onlyNumbers
+		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteHeight ]
+		ifNotEmpty: [ aBLUIAbsoluteHeight name , ': ' , aBLUIAbsoluteHeight attributeValue onlyNumbers , ';' ]
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitBLUIAbsoluteWidth: aBLUIAbsoluteWidth [
+	^ aBLUIAbsoluteWidth attributeValue onlyNumbers
+		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteWidth ]
+		ifNotEmpty: [ aBLUIAbsoluteWidth name , ': ' , aBLUIAbsoluteWidth attributeValue onlyNumbers , ';' ]
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitBLUIContainer: aBLUIContainer [
+	^ (aBLUIContainer layout
+		ifNotNil: [ self visit: aBLUIContainer layout ]
+		ifNil: [ aBLUIContainer widgets flatCollect: [ :widget | '',(self visit: widget) removeSuffix: ';' ] ])
+		,
+			(aBLUIContainer attributes
+				ifEmpty: [ '' ]
+				ifNotEmpty: [ :attributes | 
+					(attributes flatCollect: [ :attribute | self visit: attribute ])
+						ifNotEmpty: [ :od | 
+							od
+								removeLast;
+								yourself ] ])
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 	| localVariableName |
 	localVariableName := 'row'
-		,
-			(self
-				computeAcceptedNameForVariableFrom: aBLUIHorizontalLayout mooseName , aBLUIHorizontalLayout mooseID asString).
+		, (self computeAcceptedNameForVariableFrom: aBLUIHorizontalLayout mooseName , aBLUIHorizontalLayout mooseID asString).
 	^ 'newRow: [ :' , localVariableName
 		,
 			' |
@@ -164,23 +187,14 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 		,
 			(aBLUIHorizontalLayout cell
 				flatCollect: [ :cell | 
-					localVariableName , ' ' , ((self visit: cell) removeSuffix: ';')
+					localVariableName , ' ' , ('' , (self visit: cell) removeSuffix: ';')
 						,
 							'.
 			' indentBy: 4 ])
 		,
-			']
+			'
+			]
 		'
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitBLUIPanel: aBLUIPanel [
-	^ (aBLUIPanel layout ifNotNil: [ self visit: aBLUIPanel layout ] ifNil: [ '' ]) , ' '
-		,
-			(aBLUIPanel attributes
-				ifEmpty: [ '' ]
-				ifNotEmpty: [ :attributes | 
-					(attributes flatCollect: [ :attribute | (self visit: attribute)]) ifNotEmpty: [ :od | od removeLast; yourself ] ])
 ]
 
 { #category : #visiting }
@@ -194,7 +208,7 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 		,
 			(aBLUIVerticalLayout cell
 				flatCollect: [ :cell | 
-					localVariableName , ' ' , ((self visit: cell) removeSuffix: ';')
+					localVariableName , ' ' , ('',(self visit: cell)removeSuffix: ';')
 						,
 							'.
 			' indentBy: 4 ])
@@ -202,11 +216,6 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 			'
 		]
 	'
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitBLUIWidth: aBLUIWidth [
-	^ aBLUIWidth attributeValue onlyNumbers ifEmpty: [self visitBLAttribute: aBLUIWidth ] ifNotEmpty: [aBLUIWidth name , ': ' , aBLUIWidth attributeValue onlyNumbers , ';']
 ]
 
 { #category : #visiting }
