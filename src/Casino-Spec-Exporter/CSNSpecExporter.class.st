@@ -106,11 +106,11 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 	^ SpecLayout composed '
 				,
 					({aBLPage widgets.
-					aBLPage businessPage} flatten flatCollect: [ :widget | ((self visit: widget) removeSuffix: ';') , ';' , String crlf ])
+					aBLPage businessPage} flatten flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result , ';' , String crlf ] ])
 				,
 					'
 				yourself'.
-	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString:( aBLPage title ifNil: [ '' ])) , '''').
+	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aBLPage title ifNil: [ '' ])) , '''').
 	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
 	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class.
 	^ self visitBLWidget: aBLPage
@@ -133,14 +133,12 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 		compile:
 			'defaultSpec
 	<spec: #default>
-	^ SpecLayout composed '
-				, (aBLBusinessPage widgets flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') , String crlf ])
+	^ SpecLayout composed ' , (aBLBusinessPage widgets flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result, ';', String crlf ] ])
 				,
 					'
 				yourself'.
 	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
-	class
-		compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aBLBusinessPage title ifNil: [ '' ])) , '''').
+	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aBLBusinessPage title ifNil: [ '' ])) , '''').
 	initializeWidgetsExporter exportInitializeWidgetOfBusinessPage: aBLBusinessPage inClass: class.
 	^ self visitBLWidget: aBLBusinessPage
 ]
