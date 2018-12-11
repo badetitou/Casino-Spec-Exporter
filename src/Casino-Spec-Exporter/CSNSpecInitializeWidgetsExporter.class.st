@@ -71,6 +71,15 @@ CSNSpecInitializeWidgetsExporter >> visitBLPageMetier: aBLBusinessPage [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitBLUIButton: aBLUIButton [
+	^ (self computeWidgetName: aBLUIButton) , ' := self newButton '
+		,
+			(aBLUIButton attributes
+				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		, 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIContainer: aBLUIContainer [
 	^ (self computeWidgetName: aBLUIContainer)
 		, ' := (self instantiate: NullPresenter)'
@@ -85,12 +94,6 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIDisabled: aBLUIDisabled [
 CSNSpecInitializeWidgetsExporter >> visitBLUIInput: aBLUIInput [
 	^ (self computeWidgetName: aBLUIInput) , ' := self newTextInput '
 		, (aBLUIInput attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
-]
-
-{ #category : #visiting }
-CSNSpecInitializeWidgetsExporter >> visitBLUIInputButton: aBLUIInputButton [
-	^ (self computeWidgetName: aBLUIInputButton) , ' := self newButton '
-		, (aBLUIInputButton attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
