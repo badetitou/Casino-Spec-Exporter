@@ -15,13 +15,13 @@ CSNSpecInitializeWidgetsExporter >> computeWidgetName: aWidget [
 	^ self mainExporter computeAcceptedNameForVariableFrom: aWidget name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfBusinessPage: aBLBuisinessPage inClass: aClass [
 	aClass compile: 'initializeWidgets
 	', ((self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage) flatCollect: [:widget | (self visit: widget), '.', String crlf, String tab])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfPage: aBLPage inClass: aClass [
 	aClass compile: 'initializeWidgets
 	', ((self recursiveLocalWidgetOfPage: aBLPage) flatCollect: [:widget | (self visit: widget), '.', String crlf, String tab])
@@ -42,13 +42,13 @@ CSNSpecInitializeWidgetsExporter >> protectString: aString [
 	^ self mainExporter protectString: aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
 	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
 		reject: [ :widget | widget isKindOf: BLUIPanel ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfPage: aBLPage [
 	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: BLUIPanel ]
 ]
@@ -119,7 +119,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIInputText: aBLUIInputText [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUILabel: aBLUILabel [
-	^ 'label: ''' , (self protectString: aBLUILabel text) , ''';'
+	^ 'label: ''' , (self protectString: aBLUILabel attributeValue) , ''';'
 ]
 
 { #category : #visiting }
@@ -142,7 +142,7 @@ CSNSpecInitializeWidgetsExporter >> visitBLUIParagraph: aBLUIParagraph [
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitBLUIPlaceholder: aBLUIPlaceholder [
-	^ 'ghostText: ''' , (self protectString: aBLUIPlaceholder text) , ''';'
+	^ 'ghostText: ''' , (self protectString: aBLUIPlaceholder attributeValue) , ''';'
 ]
 
 { #category : #visiting }
