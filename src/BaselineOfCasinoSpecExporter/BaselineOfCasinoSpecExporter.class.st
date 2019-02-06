@@ -18,10 +18,10 @@ BaselineOfCasinoSpecExporter >> baseline: spec [
 { #category : #baselines }
 BaselineOfCasinoSpecExporter >> defineDependencies: spec [
 	spec
-		baseline: 'BLToolkit'
+		baseline: 'Casino'
 		with: [ spec
 				loads: 'core-extented';
-				repository: 'github://badetitou/BL-Toolkit:master/src' ]
+				repository: 'github://badetitou/Casino:master/src' ]
 ]
 
 { #category : #baselines }
@@ -37,5 +37,5 @@ BaselineOfCasinoSpecExporter >> definePackages: spec [
 		repository: 'https://github.com/badetitou/Casino-Spec-Exporter';
 		package: 'BaselineOfCasinoSpecExporter';
 		package: 'Casino-Spec-Exporter'
-			with: [ spec requires: #('BLToolkit') ]
+			with: [ spec requires: #('Casino') ]
 ]

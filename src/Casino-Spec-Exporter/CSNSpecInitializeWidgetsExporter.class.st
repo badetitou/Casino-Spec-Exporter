@@ -3,7 +3,7 @@ Only use to create the initializeWidgets method
 "
 Class {
 	#name : #CSNSpecInitializeWidgetsExporter,
-	#superclass : #BLModelExporter,
+	#superclass : #CSNModelExporter,
 	#instVars : [
 		'mainExporter'
 	],
@@ -45,12 +45,12 @@ CSNSpecInitializeWidgetsExporter >> protectString: aString [
 { #category : #accessing }
 CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
 	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
-		reject: [ :widget | widget isKindOf: BLUIPanel ]
+		reject: [ :widget | widget isKindOf: CSNUIPanel ]
 ]
 
 { #category : #accessing }
 CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfPage: aBLPage [
-	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: BLUIPanel ]
+	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: CSNUIPanel ]
 ]
 
 { #category : #visiting }

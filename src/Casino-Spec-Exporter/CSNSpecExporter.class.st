@@ -1,6 +1,6 @@
 Class {
 	#name : #CSNSpecExporter,
-	#superclass : #BLModelExporter,
+	#superclass : #CSNModelExporter,
 	#instVars : [
 		'initializeWidgetsExporter'
 	],
@@ -62,12 +62,12 @@ CSNSpecExporter >> recursiveLocalWidgetNameOfPage: aBLPage [
 { #category : #visiting }
 CSNSpecExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
 	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
-		reject: [ :widget | widget isKindOf: BLUIPanel ]
+		reject: [ :widget | widget isKindOf: CSNUIPanel ]
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> recursiveLocalWidgetOfPage: aBLPage [
-	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: BLUIPanel ]
+	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: CSNUIPanel ]
 ]
 
 { #category : #visiting }
