@@ -76,18 +76,48 @@ CSNSpecExporter >> visitBLAttribute: aBLAttribute [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLCell: aBLCell [
+CSNSpecExporter >> visitBLWidget: aBLWidget [
+	^ ' add: #' , (self computeAcceptedNameForVariableFrom: aBLWidget name uncapitalized) , ' ' , (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute ])
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitCell: aBLCell [
  	^ aBLCell widget ifNil: [ '' ] ifNotNil: [ self visit: aBLCell widget ] 
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLLayout: aBLLayout [
-
-	^ self visitBLUIVerticalLayout: aBLLayout
+CSNSpecExporter >> visitInsideAContainerWithLocalVariable: localVariableName andContainedWidgets: containedWidgets [
+	localVariableName.
+	^ 'newColumn: [ :' , localVariableName
+		,
+			' |
+		'
+		,
+			(containedWidgets
+				flatCollect: [ :widget |
+					localVariableName , ' ' , ('' , (self visit: widget) removeSuffix: ';')
+						,
+							'.
+			' indentBy: 4 ])
+		,
+			'
+		]
+	'
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLPage: aBLPage [
+CSNSpecExporter >> visitLayout: aBLLayout [
+
+	^ self visitUIVerticalLayout: aBLLayout
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitMooseModel: aMooseModel [
+	aMooseModel allBLPage do: [ :phase | self visit: phase ]
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitPage: aBLPage [
 	| class |
 	class := ComposablePresenter
 		subclass: self prefix , (self computeAcceptedNameForClassFrom: aBLPage name)
@@ -118,7 +148,7 @@ CSNSpecExporter >> visitBLPage: aBLPage [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
+CSNSpecExporter >> visitPageMetier: aBLBusinessPage [
 	| class |
 	class := ComposablePresenter
 		subclass: self prefix , (aBLBusinessPage name capitalized , aBLBusinessPage mooseID asString)
@@ -161,21 +191,21 @@ CSNSpecExporter >> visitBLPageMetier: aBLBusinessPage [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIAbsoluteHeight: aBLUIAbsoluteHeight [
+CSNSpecExporter >> visitUIAbsoluteHeight: aBLUIAbsoluteHeight [
 	^ aBLUIAbsoluteHeight attributeValue onlyNumbers
 		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteHeight ]
 		ifNotEmpty: [ aBLUIAbsoluteHeight name , ': ' , aBLUIAbsoluteHeight attributeValue onlyNumbers , ';' ]
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIAbsoluteWidth: aBLUIAbsoluteWidth [
+CSNSpecExporter >> visitUIAbsoluteWidth: aBLUIAbsoluteWidth [
 	^ aBLUIAbsoluteWidth attributeValue onlyNumbers
 		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteWidth ]
 		ifNotEmpty: [ aBLUIAbsoluteWidth name , ': ' , aBLUIAbsoluteWidth attributeValue onlyNumbers , ';' ]
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIContainer: aBLUIContainer [
+CSNSpecExporter >> visitUIContainer: aBLUIContainer [
 	^ (aBLUIContainer layout
 		ifNotNil: [ self visit: aBLUIContainer layout ]
 		ifNil: [ self visitInsideAContainerWithLocalVariable: ('row', (self computeAcceptedNameForVariableFrom: aBLUIContainer mooseName , aBLUIContainer mooseID asString) ) andContainedWidgets: aBLUIContainer widgets "aBLUIContainer widgets flatCollect: [ :widget | '' , (self visit: widget) , ';' ]" ])
@@ -191,7 +221,7 @@ CSNSpecExporter >> visitBLUIContainer: aBLUIContainer [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
+CSNSpecExporter >> visitUIHorizontalLayout: aBLUIHorizontalLayout [
 	| localVariableName |
 	localVariableName := 'row'
 		, (self computeAcceptedNameForVariableFrom: aBLUIHorizontalLayout mooseName , aBLUIHorizontalLayout mooseID asString).
@@ -213,7 +243,7 @@ CSNSpecExporter >> visitBLUIHorizontalLayout: aBLUIHorizontalLayout [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
+CSNSpecExporter >> visitUIVerticalLayout: aBLUIVerticalLayout [
 	| localVariableName |
 	localVariableName := 'col' , (self computeAcceptedNameForVariableFrom: (aBLUIVerticalLayout mooseName, aBLUIVerticalLayout mooseID asString)).
 	^ 'newColumn: [ :' , localVariableName
@@ -231,34 +261,4 @@ CSNSpecExporter >> visitBLUIVerticalLayout: aBLUIVerticalLayout [
 			'
 		]
 	'
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitBLWidget: aBLWidget [
-	^ ' add: #' , (self computeAcceptedNameForVariableFrom: aBLWidget name uncapitalized) , ' ' , (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute ])
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitInsideAContainerWithLocalVariable: localVariableName andContainedWidgets: containedWidgets [
-	localVariableName.
-	^ 'newColumn: [ :' , localVariableName
-		,
-			' |
-		'
-		,
-			(containedWidgets
-				flatCollect: [ :widget |
-					localVariableName , ' ' , ('' , (self visit: widget) removeSuffix: ';')
-						,
-							'.
-			' indentBy: 4 ])
-		,
-			'
-		]
-	'
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitMooseModel: aMooseModel [
-	aMooseModel allBLPage do: [ :phase | self visit: phase ]
 ]
