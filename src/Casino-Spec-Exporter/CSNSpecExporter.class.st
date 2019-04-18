@@ -71,13 +71,8 @@ CSNSpecExporter >> recursiveLocalWidgetOfPage: aBLPage [
 ]
 
 { #category : #visiting }
-CSNSpecExporter >> visitBLAttribute: aBLAttribute [
+CSNSpecExporter >> visitAttribute: aBLAttribute [
 	^ ''
-]
-
-{ #category : #visiting }
-CSNSpecExporter >> visitBLWidget: aBLWidget [
-	^ ' add: #' , (self computeAcceptedNameForVariableFrom: aBLWidget name uncapitalized) , ' ' , (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute ])
 ]
 
 { #category : #visiting }
@@ -113,7 +108,7 @@ CSNSpecExporter >> visitLayout: aBLLayout [
 
 { #category : #visiting }
 CSNSpecExporter >> visitMooseModel: aMooseModel [
-	aMooseModel allBLPage do: [ :phase | self visit: phase ]
+	aMooseModel allCSNPage do: [ :phase | self visit: phase ]
 ]
 
 { #category : #visiting }
@@ -144,7 +139,7 @@ CSNSpecExporter >> visitPage: aBLPage [
 	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aBLPage title ifNil: [ '' ])) , '''').
 	class instanceVariables do: [ :each | self createAccessorForVariable: each inClass: class ].
 	initializeWidgetsExporter exportInitializeWidgetOfPage: aBLPage inClass: class.
-	^ self visitBLWidget: aBLPage
+	^ self visitWidget: aBLPage
 ]
 
 { #category : #visiting }
@@ -187,20 +182,20 @@ CSNSpecExporter >> visitPageMetier: aBLBusinessPage [
 	initializeWidgetsExporter
 		exportInitializeWidgetOfBusinessPage: aBLBusinessPage
 		inClass: class.
-	^ self visitBLWidget: aBLBusinessPage
+	^ self visitWidget: aBLBusinessPage
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> visitUIAbsoluteHeight: aBLUIAbsoluteHeight [
 	^ aBLUIAbsoluteHeight attributeValue onlyNumbers
-		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteHeight ]
+		ifEmpty: [ self visitAttribute: aBLUIAbsoluteHeight ]
 		ifNotEmpty: [ aBLUIAbsoluteHeight name , ': ' , aBLUIAbsoluteHeight attributeValue onlyNumbers , ';' ]
 ]
 
 { #category : #visiting }
 CSNSpecExporter >> visitUIAbsoluteWidth: aBLUIAbsoluteWidth [
 	^ aBLUIAbsoluteWidth attributeValue onlyNumbers
-		ifEmpty: [ self visitBLAttribute: aBLUIAbsoluteWidth ]
+		ifEmpty: [ self visitAttribute: aBLUIAbsoluteWidth ]
 		ifNotEmpty: [ aBLUIAbsoluteWidth name , ': ' , aBLUIAbsoluteWidth attributeValue onlyNumbers , ';' ]
 ]
 
@@ -261,4 +256,9 @@ CSNSpecExporter >> visitUIVerticalLayout: aBLUIVerticalLayout [
 			'
 		]
 	'
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitWidget: aBLWidget [
+	^ ' add: #' , (self computeAcceptedNameForVariableFrom: aBLWidget name uncapitalized) , ' ' , (aBLWidget attributes flatCollect: [ :attribute | self visit: attribute ])
 ]
