@@ -54,13 +54,8 @@ CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfPage: aBLPage [
 ]
 
 { #category : #visiting }
-CSNSpecInitializeWidgetsExporter >> visitBLAttribute: aBLAttribute [
+CSNSpecInitializeWidgetsExporter >> visitAttribute: aBLAttribute [
 	^ ''
-]
-
-{ #category : #visiting }
-CSNSpecInitializeWidgetsExporter >> visitBLWidget: aBLWidget [
-	^ ' "not handle -->  ' , (self computeWidgetName: aBLWidget) , '"'
 ]
 
 { #category : #visiting }
@@ -173,6 +168,17 @@ CSNSpecInitializeWidgetsExporter >> visitUITitle: aBLUITitle [
 ]
 
 { #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitUITree: aBLUITree [
+	^  (self computeWidgetName: aBLUITree) , ' := self newTree '
+		, (aBLUITree attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+]
+
+{ #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitUIValue: aBLUIValue [
 	^ 'text: ''' , (self protectString: aBLUIValue attributeValue) , ''';'
+]
+
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> visitWidget: aBLWidget [
+	^ ' "not handle -->  ' , (self computeWidgetName: aBLWidget) , '"'
 ]
