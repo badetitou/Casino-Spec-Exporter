@@ -40,7 +40,6 @@ CSNSpecExporter >> prefix [
 
 { #category : #visiting }
 CSNSpecExporter >> prepareExport [
-	RPackageOrganizer default createPackageNamed: self exportedPackageName.
 	initializeWidgetsExporter := CSNSpecInitializeWidgetsExporter new mainExporter: self; yourself
 ]
 
