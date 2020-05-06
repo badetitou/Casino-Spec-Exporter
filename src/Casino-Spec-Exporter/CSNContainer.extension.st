@@ -1,7 +1,7 @@
-Extension { #name : #CSNUIContainer }
+Extension { #name : #CSNContainer }
 
 { #category : #'*Casino-Spec-Exporter' }
-CSNUIContainer >> localWidgets [
+CSNContainer >> localWidgets [
 	"The widget inside this widget except the widgets inside a Business Page"
 
 	^ {(widgets , (widgets collect: #localWidgets)
