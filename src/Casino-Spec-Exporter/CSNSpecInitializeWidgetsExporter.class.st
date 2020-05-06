@@ -18,13 +18,13 @@ CSNSpecInitializeWidgetsExporter >> computeWidgetName: aWidget [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfBusinessPage: aBLBuisinessPage inClass: aClass [
 	aClass compile: 'initializeWidgets
-	', ((self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage) flatCollect: [:widget | (self visit: widget), '.', String crlf, String tab])
+	', ((self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfPage: aBLPage inClass: aClass [
 	aClass compile: 'initializeWidgets
-	', ((self recursiveLocalWidgetOfPage: aBLPage) flatCollect: [:widget | (self visit: widget), '.', String crlf, String tab])
+	', ((self recursiveLocalWidgetOfPage: aBLPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
 ]
 
 { #category : #accessing }
@@ -80,7 +80,7 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUIButton: aCSNUIButton [
 	^ (self computeWidgetName: aCSNUIButton) , ' := self newButton '
 		,
 			(aCSNUIButton attributes
-				flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+				flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ])
 		, 'yourself'
 ]
 
@@ -92,13 +92,13 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUIDisabled: aCSNUIDisabled [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUIInput: aCSNUIInput [
 	^ (self computeWidgetName: aCSNUIInput) , ' := self newTextInput '
-		, (aCSNUIInput attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUIInput attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUIInputCheckbox: aCSNUIInputCheckbox [
 	^ (self computeWidgetName: aCSNUIInputCheckbox) , ' := self newCheckBox '
-		, (aCSNUIInputCheckbox attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUIInputCheckbox attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -106,14 +106,14 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUIInputPassword: aCSNUIInputPassword
 	^ (self computeWidgetName: aCSNUIInputPassword)
 		,
 			' := self newTextInput 
-		encrypted: true;' , (aCSNUIInputPassword attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ])
+		encrypted: true;' , (aCSNUIInputPassword attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ])
 		, 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUIInputText: aCSNUIInputText [
 	^ (self computeWidgetName: aCSNUIInputText) , ' := self newTextInput '
-		, (aCSNUIInputText attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUIInputText attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -124,19 +124,19 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUILabel: aCSNUILabel [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUILink: aCSNUILink [
 	^ (self computeWidgetName: aCSNUILink) , ' := self newLabel '
-		, (aCSNUILink attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUILink attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUIList: aCSNUIList [
 	^ (self computeWidgetName: aCSNUIList) , ' := self newList '
-		, (aCSNUIList attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUIList attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUIParagraph: aCSNUIParagraph [
 	^ (self computeWidgetName: aCSNUIParagraph) , ' := self newLabel '
-		, (aCSNUIParagraph attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUIParagraph attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -147,13 +147,13 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUIPlaceholder: aCSNUIPlaceholder [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUISelect: aCSNUISelect [
 	^ (self computeWidgetName: aCSNUISelect) , ' := self newDropList '
-		, (aCSNUISelect attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUISelect attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUITextarea: aCSNUITextarea [
 	^  (self computeWidgetName: aCSNUITextarea) , ' := self newText '
-		, (aCSNUITextarea attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUITextarea attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
@@ -164,7 +164,7 @@ CSNSpecInitializeWidgetsExporter >> visitCSNUITitle: aCSNUITitle [
 { #category : #visiting }
 CSNSpecInitializeWidgetsExporter >> visitCSNUITree: aCSNUITree [
 	^ (self computeWidgetName: aCSNUITree) , ' := self newTree '
-		, (aCSNUITree attributes flatCollect: [ :attribute | (self visit: attribute) , String crlf , String tab , String tab ]) , 'yourself'
+		, (aCSNUITree attributes flatCollect: [ :attribute | (self visit: attribute) , String cr , String tab , String tab ]) , 'yourself'
 ]
 
 { #category : #visiting }
