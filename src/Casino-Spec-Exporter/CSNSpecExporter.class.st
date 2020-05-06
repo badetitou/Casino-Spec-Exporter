@@ -94,12 +94,12 @@ CSNSpecExporter >> visitCSNBusinessPage: aCSNBusinessPage [
 	^ SpecColumnLayout composed '
 				,
 					(aCSNBusinessPage widgets
-						flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result , ';' , String crlf ] ])
+						flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result , ';' , String cr ] ])
 				,
 					'
 				yourself'.
 	class instVarNames do: [ :each | self createAccessorForVariable: each inClass: class ].
-	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aCSNBusinessPage title ifNil: [ '' ])) , '''').
+	class compile: 'title' , String cr , String tab , '^ ' , ('''' , (self protectString: (aCSNBusinessPage title ifNil: [ '' ])) , '''').
 	initializeWidgetsExporter exportInitializeWidgetOfBusinessPage: aCSNBusinessPage inClass: class.
 	^ self visitCSNWidget: aCSNBusinessPage
 ]
@@ -108,7 +108,9 @@ CSNSpecExporter >> visitCSNBusinessPage: aCSNBusinessPage [
 CSNSpecExporter >> visitCSNContainer: aCSNContainer [
 	^ (aCSNContainer layout
 		ifNotNil: [ self visit: aCSNContainer layout ]
-		ifNil: [ self visitInsideAContainerWithLocalVariable: ('row', (self computeAcceptedNameForVariableFrom: aCSNContainer mooseName , aCSNContainer mooseID asString) ) andContainedWidgets: aCSNContainer widgets "aBLUIContainer widgets flatCollect: [ :widget | '' , (self visit: widget) , ';' ]" ])
+		ifNil: [ self
+				visitInsideAContainerWithLocalVariable: 'row' , (self computeAcceptedNameForVariableFrom: aCSNContainer mooseName , aCSNContainer mooseID asString)
+				andContainedWidgets: aCSNContainer widgets	"aBLUIContainer widgets flatCollect: [ :widget | '' , (self visit: widget) , ';' ]" ])
 		,
 			(aCSNContainer attributes
 				ifEmpty: [ '' ]
@@ -194,11 +196,11 @@ CSNSpecExporter >> visitCSNPage: aCSNPage [
 	^ SpecColumnLayout composed '
 				,
 					({aCSNPage widgets . aCSNPage businessPage} flatten
-						flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result , ';' , String crlf ] ])
+						flatCollect: [ :widget | ('' , (self visit: widget) removeSuffix: ';') ifEmpty: [ '' ] ifNotEmpty: [ :result | result , ';' , String cr ] ])
 				,
 					'
 				yourself'.
-	class compile: 'title' , String crlf , String tab , '^ ' , ('''' , (self protectString: (aCSNPage title ifNil: [ '' ])) , '''').
+	class compile: 'title' , String cr , String tab , '^ ' , ('''' , (self protectString: (aCSNPage title ifNil: [ '' ])) , '''').
 	class instVarNames do: [ :each | self createAccessorForVariable: each inClass: class ].
 	initializeWidgetsExporter exportInitializeWidgetOfPage: aCSNPage inClass: class.
 	^ self visitCSNWidget: aCSNPage
@@ -216,6 +218,12 @@ CSNSpecExporter >> visitCSNUIAbsoluteWidth: aCSNUIAbsoluteWidth [
 	^ aCSNUIAbsoluteWidth attributeValue onlyNumbers
 		ifEmpty: [ self visitCSNAttribute: aCSNUIAbsoluteWidth ]
 		ifNotEmpty: [ aCSNUIAbsoluteWidth name , ': ' , aCSNUIAbsoluteWidth attributeValue onlyNumbers , ';' ]
+]
+
+{ #category : #visiting }
+CSNSpecExporter >> visitCSNUIButton: aCSNUIButton [
+	"Button work as a basic widget in Spec and not as a container"
+	^ self visitCSNWidget: aCSNUIButton
 ]
 
 { #category : #visiting }
