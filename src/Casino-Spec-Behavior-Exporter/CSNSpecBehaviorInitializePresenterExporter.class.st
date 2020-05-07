@@ -4,9 +4,7 @@ Class {
 	#traits : 'TCSNExporter + TCSNBehaviorVisitor',
 	#classTraits : 'TCSNExporter classTrait + TCSNBehaviorVisitor classTrait',
 	#instVars : [
-		'initializeWidgetsExporter',
-		'behaviorModelExporter',
-		'writeStream'
+		'initializeWidgetsExporter'
 	],
 	#category : #'Casino-Spec-Behavior-Exporter'
 }
@@ -50,12 +48,6 @@ CSNSpecBehaviorInitializePresenterExporter >> exportInitializePresenterOfPage: a
 								cr ] ])
 ]
 
-{ #category : #initialization }
-CSNSpecBehaviorInitializePresenterExporter >> initialize [
-	super initialize.
-	behaviorModelExporter := self specBehaviorModelExporterClass new
-]
-
 { #category : #accesing }
 CSNSpecBehaviorInitializePresenterExporter >> specBehaviorModelExporterClass [
 	^ CSNSpecBehaviorModelExporter
@@ -70,8 +62,12 @@ CSNSpecBehaviorInitializePresenterExporter >> visitCSNAction: anAction [
 CSNSpecBehaviorInitializePresenterExporter >> visitCSNBOnClick: aCSNBOnClick [
 	self <<< 'action: ['.
 	aCSNBOnClick behavior
-		ifNotNil: [  ]
-		ifNil: [ self <<< '"behavior not extracted"' ].
+		ifNotEmpty: [ :behavior | 
+			behavior size > 1 ifTrue: [ self <<< 'More than one method' ].
+			self <<< '"'.
+			(self specBehaviorModelExporterClass on: self currentWriteStream withIndentLevel: self indentLevel) export: behavior anyOne.
+			self <<< '"' ]
+		ifEmpty: [ self <<< '"behavior not extracted"' ].
 	self <<< ']'
 ]
 
