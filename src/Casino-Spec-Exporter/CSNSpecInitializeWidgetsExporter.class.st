@@ -3,54 +3,20 @@ Only use to create the initializeWidgets method
 "
 Class {
 	#name : #CSNSpecInitializeWidgetsExporter,
-	#superclass : #CSNModelExporter,
-	#instVars : [
-		'mainExporter'
-	],
+	#superclass : #CSNSpecMethodExporter,
 	#category : #'Casino-Spec-Exporter-Exporter'
 }
 
-{ #category : #accessing }
-CSNSpecInitializeWidgetsExporter >> computeWidgetName: aWidget [
-	^ self mainExporter computeAcceptedNameForVariableFrom: aWidget name
+{ #category : #visiting }
+CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfBusinessPage: aCSNBuisinessPage inClass: aClass [
+	aClass compile: 'initializeWidgets
+	', ((self recursiveLocalWidgetOfBLBusinessPage: aCSNBuisinessPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
 ]
 
 { #category : #visiting }
-CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfBusinessPage: aBLBuisinessPage inClass: aClass [
+CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfPage: aCSNPage inClass: aClass [
 	aClass compile: 'initializeWidgets
-	', ((self recursiveLocalWidgetOfBLBusinessPage: aBLBuisinessPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
-]
-
-{ #category : #visiting }
-CSNSpecInitializeWidgetsExporter >> exportInitializeWidgetOfPage: aBLPage inClass: aClass [
-	aClass compile: 'initializeWidgets
-	', ((self recursiveLocalWidgetOfPage: aBLPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
-]
-
-{ #category : #accessing }
-CSNSpecInitializeWidgetsExporter >> mainExporter [
-	^ mainExporter
-]
-
-{ #category : #accessing }
-CSNSpecInitializeWidgetsExporter >> mainExporter: anObject [
-	mainExporter := anObject
-]
-
-{ #category : #'private - utilities' }
-CSNSpecInitializeWidgetsExporter >> protectString: aString [
-	^ self mainExporter protectString: aString
-]
-
-{ #category : #accessing }
-CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfBLBusinessPage: aBLBusinessPage [
-	^ (aBLBusinessPage widgets collect: #localWidgets) flattened
-		reject: [ :widget | widget isKindOf: CSNUIPanel ]
-]
-
-{ #category : #accessing }
-CSNSpecInitializeWidgetsExporter >> recursiveLocalWidgetOfPage: aBLPage [
-	^ aBLPage localWidgets flattened reject: [:widget | widget isKindOf: CSNUIPanel ]
+	', ((self recursiveLocalWidgetOfPage: aCSNPage) flatCollect: [:widget | (self visit: widget), '.', String cr, String tab])
 ]
 
 { #category : #visiting }

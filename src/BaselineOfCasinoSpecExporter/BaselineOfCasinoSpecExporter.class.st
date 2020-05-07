@@ -20,7 +20,7 @@ BaselineOfCasinoSpecExporter >> defineDependencies: spec [
 	spec
 		baseline: 'Casino'
 		with: [ spec
-				loads: 'core-extented';
+				loads: 'behavior';
 				repository: 'github://badetitou/Casino:master/src' ]
 ]
 
@@ -37,5 +37,7 @@ BaselineOfCasinoSpecExporter >> definePackages: spec [
 		repository: 'https://github.com/badetitou/Casino-Spec-Exporter';
 		package: 'BaselineOfCasinoSpecExporter';
 		package: 'Casino-Spec-Exporter'
+			with: [ spec requires: #('Casino') ];
+		package: 'Casino-Spec-Behavior-Exporter'
 			with: [ spec requires: #('Casino') ]
 ]
